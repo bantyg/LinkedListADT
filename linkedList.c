@@ -73,20 +73,39 @@ int indexOf(LinkedList l1, void *data){
 	return -1;
 }
 
-void * deleteElementAt(LinkedList* l1, int index){
+// void * deleteElementAt(LinkedList* l1, int index){
+// 	int i;
+// 	Node* walker = (*l1).head;
+// 	if(index==0){
+// 		(*l1).head=(*l1).head->next;
+// 		return &((*l1).head->data);
+// 	}
+// 	for ( i = 0; i<l1->count-1; i++){
+// 		if(i==index-1 ){
+// 			walker->next = walker->next->next;
+// 		}
+// 		walker = walker->next; 
+// 	}
+// 	return &(walker->data);
+// }
+
+void * deleteElementAt(LinkedList *list, int index){
 	int i;
-	Node* walker = (*l1).head;
-	if(index==0){
-		(*l1).head=(*l1).head->next;
-		return &((*l1).head->data);
+	void* data;
+	Node* listHead =list->head;
+	Node* previousNode=NULL;
+	
+	if(index>=list->count||index<0) return NULL;
+	for(i=0;i<index;i++){
+		previousNode = listHead;
+		listHead=listHead->next;
 	}
-	for ( i = 0; i<l1->count-1; i++){
-		if(i==index-1 ){
-			walker->next = walker->next->next;
-		}
-		walker = walker->next; 
-	}
-	return &(walker->data);
+	if(list->tail==listHead) list->tail=previousNode;
+	data= listHead->data;
+	previousNode?(previousNode->next =listHead->next):(list->head =list->head->next);
+	list->count--;
+	free(listHead);
+	return data;
 }
 
 int asArray(LinkedList l1, void **array){
